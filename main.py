@@ -80,10 +80,6 @@ def get_all_vacancies_sj(secret_key, language):
         return all_vacancies
 
 
-def get_vacancies_count_sj(all_vacancies):
-    return all_vacancies['total']
-
-
 def get_salaries_sj(all_vacancies):
     processed_vacancies = 0
     predicted_salaries = []
@@ -103,7 +99,7 @@ def get_sj_statistic(languages, secret_key):
         all_vacancies_sj = get_all_vacancies_sj(secret_key, language)
         processed_vacancies, average_salary = get_salaries_sj(all_vacancies_sj)
         sj_total.append([language,
-                         get_vacancies_count_sj(all_vacancies_sj),
+                         get_all_vacancies_sj(secret_key, language)['total'],
                          processed_vacancies,
                          average_salary])
     return sj_total
@@ -118,8 +114,8 @@ def print_table(languages, title):
     table.append(rows)
     for language in languages:
         table.append(language)
-    print_table = SingleTable(table, title)
-    print(print_table.table)
+    salaries_table = SingleTable(table, title)
+    print(salaries_table.table)
 
 
 def main():
