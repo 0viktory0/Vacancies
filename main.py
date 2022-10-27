@@ -68,7 +68,6 @@ def get_all_vacancies_sj(secret_key, language):
     page = 0
     pages_number = 1
     header = {'X-Api-App-Id': secret_key}
-    list_of_vacancies = []
     while page < pages_number:
         params = {'town':'Москва',
                   'keyword': f'программист {language}',
@@ -77,21 +76,18 @@ def get_all_vacancies_sj(secret_key, language):
         response.raise_for_status()
         page += 1
         pages_number += 1
-        vacancies = response.json()
-        if not vacancies:
-            break
-        else:
-            return all_vacancies
+        all_vacancies = response.json()
+        return all_vacancies
 
 
 def get_vacancies_count_sj(all_vacancies):
-    return vacancies['total']
+    return all_vacancies['total']
 
 
-def get_salaries_sj(vacancies):
+def get_salaries_sj(all_vacancies):
     processed_vacancies = 0
     predicted_salaries = []
-    for vacancy_salary in vacancies['objects']:
+    for vacancy_salary in all_vacancies['objects']:
         if vacancy_salary['currency'] != 'rub':
             continue
         salary_from = vacancy_salary['payment_from'] or 0
